@@ -69,12 +69,13 @@ L'offre gratuite endort chaque service après 15 minutes sans visite. Le premier
 
 ## 📌 Routes du BFF
 
-Toutes exigent une session ouverte, sauf les trois premières.
+Toutes exigent une session ouverte, sauf les quatre premières.
 
 | Route | Rôle |
 |---|---|
 | `POST /bff/session/login` | Ouvre la session (`{username, password}`) |
 | `GET /bff/session/me` | `200` si la session est valide, sinon `401` |
+| `GET /bff/api-status` | `UP` ou `DOWN` selon que l'API répond (pastille en bas à droite du site ; interroger l'API la réveille) |
 | `GET /actuator/health` | Santé du service |
 | `POST /bff/session/logout` | Ferme la session |
 | `GET /bff/documents?archived=` | Liste les documents actifs ou archivés |
@@ -89,7 +90,7 @@ Seules ces routes existent (liste blanche) : le BFF n'est pas un proxy ouvert.
 
 ```bash
 .\mvnw.cmd verify          # back : tests + couverture JaCoCo ≥ 90 % (le build échoue en dessous)
-cd frontend && npm test    # front : 14 tests
+cd frontend && npm test    # front : 17 tests
 ```
 
 Les tests du back simulent l'API (aucune base ni Docker nécessaire).

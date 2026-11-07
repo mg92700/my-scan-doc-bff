@@ -1,0 +1,43 @@
+<main class="login">
+  <form class="card" (ngSubmit)="submit()" autocomplete="on">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+          <path d="M14 3v5h5M9 13h6M9 17h4" />
+        </svg>
+      </span>
+      <h1>My Scan Doc</h1>
+      <p class="muted">Connectez-vous pour consulter vos documents.</p>
+    </div>
+
+    <label>
+      Identifiant
+      <input
+        name="username"
+        [(ngModel)]="username"
+        autocomplete="username"
+        required
+        autofocus
+      />
+    </label>
+    <label>
+      Mot de passe
+      <input
+        name="password"
+        type="password"
+        [(ngModel)]="password"
+        autocomplete="current-password"
+        required
+      />
+    </label>
+
+    @if (error(); as message) {
+      <p class="error" role="alert">{{ message }}</p>
+    }
+
+    <button class="primary submit" type="submit" [disabled]="busy() || !username || !password">
+      {{ busy() ? 'Connexion…' : 'Se connecter' }}
+    </button>
+  </form>
+</main>

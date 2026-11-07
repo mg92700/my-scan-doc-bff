@@ -26,6 +26,7 @@ Le navigateur parle **uniquement** au BFF, avec un cookie de session. Seul le BF
 | 16 | **Conteneur non-root**, image JRE seule | `Dockerfile` | Réduit l'impact d'une compromission |
 | 17 | **Taille d'upload limitée à 20 Mo** | `application.yml` | Même limite que l'API |
 | 18 | **Actuator limité à `/actuator/health`**, sans détails | `application.yml` | Pas d'exposition technique |
+| 19 | **État de l'API public mais minimal** : seulement `UP`/`DOWN`, résultat gardé 5 s, aucune redirection suivie | `StatusController`, `ApiStatusService` | Rien d'exploitable n'est révélé et le point d'entrée ne peut pas servir à saturer l'API |
 
 ## Risques restants
 

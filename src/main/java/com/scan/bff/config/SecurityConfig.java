@@ -85,7 +85,7 @@ public class SecurityConfig {
                     // Fichiers du front Angular
                     .requestMatchers("/", "/index.html", "/*.js", "/*.css", "/*.ico", "/*.svg", "/*.png",
                             "/*.woff2", "/media/**", "/assets/**").permitAll()
-                    .requestMatchers("/bff/session/login", "/bff/session/me", "/actuator/health", "/error").permitAll()
+                    .requestMatchers("/bff/session/login", "/bff/session/me", "/bff/api-status", "/actuator/health", "/error").permitAll()
                     .requestMatchers("/bff/**").authenticated()
                     .anyRequest().denyAll());
         return http.build();

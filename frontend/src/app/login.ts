@@ -5,29 +5,12 @@ import { SessionService } from './session.service';
 @Component({
   selector: 'app-login',
   imports: [FormsModule],
-  template: `
-    <main class="login">
-      <form class="card" (ngSubmit)="submit()" autocomplete="on">
-        <h1>My Scan Doc</h1>
-        <p class="muted">Connectez-vous pour consulter vos documents.</p>
-        <label>Identifiant
-          <input name="username" [(ngModel)]="username" autocomplete="username" required autofocus />
-        </label>
-        <label>Mot de passe
-          <input name="password" type="password" [(ngModel)]="password" autocomplete="current-password" required />
-        </label>
-        @if (error()) {
-          <p class="error" role="alert">{{ error() }}</p>
-        }
-        <button class="primary" type="submit" [disabled]="busy() || !username || !password">
-          {{ busy() ? 'Connexion…' : 'Se connecter' }}
-        </button>
-      </form>
-    </main>
-  `,
+  templateUrl: './login.html',
+  styleUrl: './login.css',
 })
 export class Login {
   private readonly session = inject(SessionService);
+
   protected username = '';
   protected password = '';
   protected readonly busy = signal(false);

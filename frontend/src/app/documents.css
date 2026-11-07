@@ -1,0 +1,286 @@
+/* --- En-tête --------------------------------------------------------------- */
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand,
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo,
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--primary-text);
+}
+
+.avatar {
+  border-radius: 50%;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.username {
+  font-weight: 500;
+}
+
+/* --- Mise en page ---------------------------------------------------------- */
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: grid;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.tabs button {
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+}
+
+.tabs button.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-text);
+}
+
+.search {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+}
+
+.search .icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.search input {
+  padding-left: 36px;
+}
+
+/* --- Zone de dépôt --------------------------------------------------------- */
+.drop {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 28px 20px;
+  text-align: center;
+  background: var(--surface);
+  border: 2px dashed #c7d6f5;
+  border-radius: var(--radius-lg);
+  transition:
+    background-color var(--transition),
+    border-color var(--transition);
+}
+
+.drop.over {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+
+.drop p {
+  margin: 0;
+}
+
+.drop-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+/* --- Tableau --------------------------------------------------------------- */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+th {
+  background: var(--surface-alt);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+tbody tr {
+  transition: background-color var(--transition);
+}
+
+tbody tr:hover {
+  background: var(--surface-alt);
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+td.name {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.right {
+  text-align: right;
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+.actions > * {
+  margin-left: 6px;
+}
+
+.actions button {
+  padding: 5px 10px;
+  font-size: 0.85rem;
+}
+
+.confirm {
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--surface-alt);
+  color: var(--muted);
+}
+
+.badge[data-kind='PDF'] {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.badge[data-kind='ZIP'] {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.empty {
+  text-align: center;
+  padding: 40px 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin: 0;
+}
+
+/* --- Mobile ---------------------------------------------------------------- */
+@media (max-width: 720px) {
+  .bar {
+    padding: 10px 16px;
+  }
+
+  .username {
+    display: none;
+  }
+
+  .search {
+    max-width: none;
+  }
+
+  table,
+  thead,
+  tbody,
+  tr,
+  th,
+  td {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    border: 0;
+    padding: 2px 0;
+  }
+
+  td.name {
+    max-width: none;
+  }
+
+  .right {
+    text-align: left;
+  }
+
+  .actions {
+    white-space: normal;
+    padding-top: 10px;
+  }
+
+  .actions > * {
+    margin: 0 6px 6px 0;
+  }
+}

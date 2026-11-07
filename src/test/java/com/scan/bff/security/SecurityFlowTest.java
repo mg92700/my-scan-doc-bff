@@ -1,6 +1,8 @@
 package com.scan.bff.security;
 
 import com.scan.bff.api.ApiGateway;
+import com.scan.bff.api.ApiStatusService;
+import com.scan.bff.api.StatusController;
 import com.scan.bff.api.BffExceptionHandler;
 import com.scan.bff.api.DocumentsController;
 import com.scan.bff.config.SecurityConfig;
@@ -25,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /** Parcours de sécurité : session, CSRF, anti force brute, routes protégées. */
-@WebMvcTest(controllers = {SessionController.class, DocumentsController.class})
+@WebMvcTest(controllers = {SessionController.class, DocumentsController.class, StatusController.class})
 @Import({SecurityConfig.class, LoginAttemptLimiter.class, BffExceptionHandler.class})
 @TestPropertySource(properties = {
         "app.auth.username=owner",
@@ -40,6 +42,7 @@ class SecurityFlowTest {
     @Autowired MockMvc mvc;
     @Autowired LoginAttemptLimiter limiter;
     @MockitoBean ApiGateway gateway;
+    @MockitoBean ApiStatusService apiStatus;
 
     @BeforeEach
     void resetLimiter() {
@@ -129,6 +132,15 @@ class SecurityFlowTest {
     void mutation_sans_csrf_refusee_meme_connecte() throws Exception {
         mvc.perform(delete("/bff/documents/{id}", java.util.UUID.randomUUID()).with(user("owner")))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void etat_de_l_api_public_sans_session() throws Exception {
+        when(apiStatus.isUp()).thenReturn(true);
+
+        mvc.perform(get("/bff/api-status"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("UP"));
     }
 
     @Test

@@ -1,0 +1,141 @@
+<header class="bar">
+  <div class="brand">
+    <span class="logo" aria-hidden="true">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+        <path d="M14 3v5h5" />
+      </svg>
+    </span>
+    <strong>My Scan Doc</strong>
+  </div>
+  <div class="user">
+    <span class="avatar" aria-hidden="true">{{ initial() }}</span>
+    <span class="username">{{ session.user() }}</span>
+    <button class="ghost" (click)="logout()">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+      </svg>
+      Déconnexion
+    </button>
+  </div>
+</header>
+
+<main class="page">
+  <div class="toolbar">
+    <nav class="tabs" aria-label="Affichage">
+      <button [class.active]="!archived()" [attr.aria-pressed]="!archived()" (click)="show(false)">
+        Documents
+      </button>
+      <button [class.active]="archived()" [attr.aria-pressed]="archived()" (click)="show(true)">
+        Archives
+      </button>
+    </nav>
+
+    <div class="search">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </svg>
+      <input
+        type="search"
+        placeholder="Rechercher par nom"
+        aria-label="Rechercher"
+        [ngModel]="query()"
+        (ngModelChange)="query.set($event)"
+      />
+    </div>
+  </div>
+
+  @if (!archived()) {
+    <section
+      class="drop"
+      [class.over]="dragging()"
+      (dragover)="$event.preventDefault(); dragging.set(true)"
+      (dragleave)="dragging.set(false)"
+      (drop)="onDrop($event)"
+    >
+      <span class="drop-icon" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M12 16V4M7 9l5-5 5 5M4 20h16" />
+        </svg>
+      </span>
+      <p><strong>Déposez un PDF ou une image ici</strong> ou</p>
+      <label class="button primary">
+        Choisir un fichier
+        <input
+          type="file"
+          hidden
+          multiple
+          accept="application/pdf,image/*"
+          (change)="onPick($event)"
+        />
+      </label>
+      <p class="muted small">
+        Les images sont converties en PDF (ou archivées en ZIP si ce n'est pas possible). 20 Mo
+        maximum.
+      </p>
+    </section>
+  }
+
+  @if (notice(); as n) {
+    <p [class]="n.kind" role="status">{{ n.text }}</p>
+  }
+  @if (slow()) {
+    <p class="info" role="status">
+      Le service se réveille, cela peut prendre jusqu'à une minute…
+    </p>
+  }
+
+  @if (loading() && documents().length === 0) {
+    <p class="muted empty">Chargement…</p>
+  } @else if (visible().length === 0) {
+    <p class="muted empty">
+      {{ archived() ? 'Aucun document archivé.' : 'Aucun document.' }}
+    </p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Type</th>
+          <th>Taille</th>
+          <th>Ajouté le</th>
+          <th class="right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (d of visible(); track d.id) {
+          <tr>
+            <td class="name" [title]="d.name">{{ d.name }}</td>
+            <td>
+              <span class="badge" [attr.data-kind]="kind(d)">{{ kind(d) }}</span>
+            </td>
+            <td class="muted">{{ size(d) }}</td>
+            <td class="muted">{{ d.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td class="right actions">
+              @if (confirming() === d.id) {
+                <span class="confirm">Supprimer définitivement ?</span>
+                <button class="danger" (click)="remove(d)" [disabled]="busyId() === d.id">
+                  Oui, supprimer
+                </button>
+                <button (click)="confirming.set(null)">Annuler</button>
+              } @else {
+                <button (click)="download(d)" [disabled]="busyId() === d.id">Télécharger</button>
+                <button (click)="toggleArchive(d)" [disabled]="busyId() === d.id">
+                  {{ archived() ? 'Restaurer' : 'Archiver' }}
+                </button>
+                <button
+                  class="danger"
+                  (click)="confirming.set(d.id)"
+                  [disabled]="busyId() === d.id"
+                >
+                  Supprimer
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</main>

@@ -1,122 +1,214 @@
+/* ---------------------------------------------------------------------------
+ * Thème clair, flat design : aplats de couleur, pas d'ombres ni de dégradés.
+ * Toutes les couleurs passent par ces jetons ; les composants n'en codent aucune.
+ * ------------------------------------------------------------------------- */
 :root {
-  --bg: #f6f7f9;
+  color-scheme: light;
+
+  --bg: #f3f6fb;
   --surface: #ffffff;
-  --text: #1c2430;
-  --muted: #5d6877;
-  --border: #dde1e7;
-  --primary: #1f5fd1;
+  --surface-alt: #f7f9fc;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e3e8f0;
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-soft: #eaf1fe;
   --primary-text: #ffffff;
-  --danger: #b3261e;
-  --success-bg: #e6f4ea;
-  --success-text: #14532d;
-  --error-bg: #fdecea;
-  --error-text: #7a1712;
-  --info-bg: #e8f0fe;
-  --info-text: #17407f;
+
+  --danger: #dc2626;
+  --danger-soft: #fdecec;
+  --success: #15803d;
+  --success-soft: #e7f6ec;
+  --info: #1e4fb8;
+  --info-soft: #eaf1fe;
+  --warning: #9a5b00;
+  --warning-soft: #fff3dc;
+
+  --radius-sm: 6px;
   --radius: 10px;
+  --radius-lg: 14px;
+  --transition: 120ms ease-out;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #12161c;
-    --surface: #1b212a;
-    --text: #e6e9ee;
-    --muted: #9aa5b4;
-    --border: #2d3641;
-    --primary: #6b9cf0;
-    --primary-text: #0b1220;
-    --danger: #ff8a80;
-    --success-bg: #12301f;
-    --success-text: #9be3b0;
-    --error-bg: #3a1815;
-    --error-text: #ffb4ab;
-    --info-bg: #14263f;
-    --info-text: #a9c8ff;
-  }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
-* { box-sizing: border-box; }
+
 body {
   margin: 0;
+  min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font:
+    15px/1.5 system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
-h1 { margin: 0 0 4px; font-size: 1.5rem; }
-.muted { color: var(--muted); }
-.small { font-size: .85rem; }
-.right { text-align: right; }
-.spacer { flex: 1; }
 
-button, .button {
+h1,
+h2 {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* --- Boutons --------------------------------------------------------------- */
+button,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
   color: var(--text);
-  background: var(--surface);
+  background: var(--surface-alt);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
   cursor: pointer;
+  transition:
+    background-color var(--transition),
+    border-color var(--transition),
+    color var(--transition);
 }
-button:hover:not(:disabled), .button:hover { border-color: var(--primary); }
-button:disabled { opacity: .5; cursor: not-allowed; }
-button:focus-visible, .button:focus-within, input:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
-.primary { background: var(--primary); color: var(--primary-text); border-color: var(--primary); font-weight: 600; }
-.danger { color: var(--danger); border-color: var(--danger); background: transparent; }
-.button { display: inline-block; }
 
+button:hover:not(:disabled),
+.button:hover {
+  background: var(--primary-soft);
+  border-color: var(--primary-soft);
+  color: var(--primary);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+.button:focus-within,
+input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+button.primary,
+.button.primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-text);
+  font-weight: 600;
+}
+
+button.primary:hover:not(:disabled),
+.button.primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: var(--primary-text);
+}
+
+button.danger {
+  background: var(--danger-soft);
+  border-color: var(--danger-soft);
+  color: var(--danger);
+}
+
+button.danger:hover:not(:disabled) {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+
+button.ghost {
+  background: transparent;
+  border-color: transparent;
+}
+
+/* --- Champs ---------------------------------------------------------------- */
 input {
   font: inherit;
   color: var(--text);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
   width: 100%;
+  transition: border-color var(--transition);
 }
 
-.login { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
-.card {
-  width: 100%; max-width: 360px; display: grid; gap: 14px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px;
+input::placeholder {
+  color: var(--muted);
 }
-.card label { display: grid; gap: 4px; font-size: .9rem; color: var(--muted); }
 
-.bar {
-  display: flex; align-items: center; gap: 12px; padding: 10px 16px;
-  background: var(--surface); border-bottom: 1px solid var(--border);
+input:hover {
+  border-color: #cbd5e1;
 }
-.page { max-width: 1000px; margin: 0 auto; padding: 16px; display: grid; gap: 14px; }
-.tabs { display: flex; gap: 8px; }
-.tabs button.active { background: var(--primary); color: var(--primary-text); border-color: var(--primary); }
 
-.drop {
-  border: 2px dashed var(--border); border-radius: var(--radius); padding: 20px; text-align: center;
-  background: var(--surface);
+input:focus-visible {
+  outline-offset: 0;
+  border-color: var(--primary);
 }
-.drop.over { border-color: var(--primary); }
-.drop p { margin: 4px 0; }
 
-.error, .success, .info { margin: 0; padding: 10px 12px; border-radius: 8px; }
-.error { background: var(--error-bg); color: var(--error-text); }
-.success { background: var(--success-bg); color: var(--success-text); }
-.info { background: var(--info-bg); color: var(--info-text); }
-
-.search { max-width: 320px; }
-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
-th { font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
-tr:last-child td { border-bottom: 0; }
-td.name { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.actions { white-space: nowrap; }
-.actions > * { margin-left: 6px; }
-.badge { font-size: .75rem; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
-.empty { text-align: center; padding: 24px 0; }
-
-@media (max-width: 720px) {
-  table, thead, tbody, tr, th, td { display: block; }
-  thead { display: none; }
-  tr { padding: 10px 12px; border-bottom: 1px solid var(--border); }
-  td { border: 0; padding: 2px 0; }
-  td.name { max-width: none; font-weight: 600; }
-  .right { text-align: left; }
-  .actions { white-space: normal; padding-top: 8px; }
-  .actions > * { margin: 0 6px 6px 0; }
+/* --- Messages -------------------------------------------------------------- */
+.error,
+.success,
+.info {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border-left: 4px solid currentColor;
+  font-size: 0.92rem;
 }
+
+.error {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.success {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.info {
+  background: var(--info-soft);
+  color: var(--info);
+}
+
+.api-status {
+  position: fixed; right: 12px; bottom: 12px; z-index: 10;
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border-radius: 999px; font-size: .8rem;
+  background: var(--surface); color: var(--muted); border: 1px solid var(--border);
+}
+.api-status .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
+.api-status.up .dot { background: #1e9e55; }
+.api-status.down .dot { background: #e0a100; animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .api-status.down .dot { animation: none; } }
