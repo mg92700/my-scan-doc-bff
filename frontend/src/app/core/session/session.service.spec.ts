@@ -8,7 +8,9 @@ describe('SessionService', () => {
   let http: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
     service = TestBed.inject(SessionService);
     http = TestBed.inject(HttpTestingController);
   });
@@ -42,7 +44,9 @@ describe('SessionService', () => {
 
   it('login refusé affiche le message du serveur', async () => {
     const p = service.login('owner', 'x');
-    http.expectOne('/bff/session/login').flush({ message: 'Identifiants invalides.' }, { status: 401, statusText: 'Unauthorized' });
+    http
+      .expectOne('/bff/session/login')
+      .flush({ message: 'Identifiants invalides.' }, { status: 401, statusText: 'Unauthorized' });
     expect(await p).toBe('Identifiants invalides.');
     expect(service.user()).toBeNull();
   });

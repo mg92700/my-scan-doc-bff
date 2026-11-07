@@ -20,14 +20,22 @@ describe('Documents', () => {
 
   beforeEach(() => {
     api = {
-      list: vi.fn().mockResolvedValue([makeDoc('1', 'facture.pdf'), makeDoc('2', 'photos.zip', 'application/zip')]),
+      list: vi
+        .fn()
+        .mockResolvedValue([
+          makeDoc('1', 'facture.pdf'),
+          makeDoc('2', 'photos.zip', 'application/zip'),
+        ]),
       archive: vi.fn().mockResolvedValue(undefined),
       unarchive: vi.fn().mockResolvedValue(undefined),
       remove: vi.fn().mockResolvedValue(undefined),
       upload: vi.fn().mockResolvedValue(undefined),
       download: vi.fn().mockResolvedValue(undefined),
     };
-    session = { user: signal<string | null>('owner'), logout: vi.fn().mockResolvedValue(undefined) };
+    session = {
+      user: signal<string | null>('owner'),
+      logout: vi.fn().mockResolvedValue(undefined),
+    };
     TestBed.configureTestingModule({
       imports: [Documents],
       providers: [
@@ -67,7 +75,9 @@ describe('Documents', () => {
     expect(rows()).toHaveLength(2);
     expect(rows()[0].textContent).toContain('facture.pdf');
     expect(rows()[0].textContent).toContain('2,0 Ko');
-    const badges = Array.from(el.querySelectorAll('.badge')).map((b) => b.getAttribute('data-kind'));
+    const badges = Array.from(el.querySelectorAll('.badge')).map((b) =>
+      b.getAttribute('data-kind'),
+    );
     expect(badges).toEqual(['PDF', 'ZIP']);
   });
 

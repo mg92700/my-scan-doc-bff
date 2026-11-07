@@ -5,7 +5,10 @@ import { App } from './app';
 
 describe('App', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [App], providers: [provideHttpClient(), provideHttpClientTesting()] });
+    TestBed.configureTestingModule({
+      imports: [App],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
   });
 
   it('affiche la connexion quand il n’y a pas de session', async () => {
@@ -22,9 +25,18 @@ describe('App', () => {
     const http = TestBed.inject(HttpTestingController);
     http.expectOne('/bff/session/me').flush({ username: 'owner' });
     await fixture.whenStable();
-    http.expectOne((r) => r.url === '/bff/documents').flush([
-      { id: '1', name: 'facture.pdf', size: 2048, contentType: 'application/pdf', createdAt: '2026-01-01T10:00:00Z', archivedAt: null },
-    ]);
+    http
+      .expectOne((r) => r.url === '/bff/documents')
+      .flush([
+        {
+          id: '1',
+          name: 'facture.pdf',
+          size: 2048,
+          contentType: 'application/pdf',
+          createdAt: '2026-01-01T10:00:00Z',
+          archivedAt: null,
+        },
+      ]);
     await new Promise((r) => setTimeout(r)); // laisse la promesse de liste se résoudre
     await fixture.whenStable();
     const el = fixture.nativeElement as HTMLElement;

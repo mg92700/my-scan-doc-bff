@@ -5,7 +5,10 @@ import { ApiStatus } from './api-status';
 
 describe('ApiStatus', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [ApiStatus], providers: [provideHttpClient(), provideHttpClientTesting()] });
+    TestBed.configureTestingModule({
+      imports: [ApiStatus],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
   });
 
   async function render(flush: (req: HttpTestingController) => void): Promise<HTMLElement> {
@@ -33,7 +36,9 @@ describe('ApiStatus', () => {
   });
 
   it('affiche « en veille » quand le BFF lui-même est injoignable', async () => {
-    const el = await render((h) => h.expectOne('/bff/api-status').error(new ProgressEvent('error')));
+    const el = await render((h) =>
+      h.expectOne('/bff/api-status').error(new ProgressEvent('error')),
+    );
     expect(el.textContent).toContain('en veille');
   });
 });

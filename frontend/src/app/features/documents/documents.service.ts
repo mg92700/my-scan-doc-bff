@@ -65,7 +65,9 @@ export function filenameFrom(header: string | null): string | null {
 export function errorMessage(e: unknown): string {
   const err = e as HttpErrorResponse;
   if (err?.status === 504 || err?.status === 502) {
-    return err.error?.message ?? 'Le service documents est indisponible, réessayez dans un instant.';
+    return (
+      err.error?.message ?? 'Le service documents est indisponible, réessayez dans un instant.'
+    );
   }
   if (err?.status === 400 || err?.status === 404 || err?.status === 413 || err?.status === 415) {
     return err.error?.message ?? 'Requête refusée.';

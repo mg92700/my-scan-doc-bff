@@ -41,3 +41,14 @@
     animation: none;
   }
 }
+
+/* Sur mobile : plus discrète, au-dessus de la barre système (encoche, geste d'accueil) */
+@media (max-width: 720px) {
+  .api-status {
+    right: max(8px, env(safe-area-inset-right));
+    bottom: max(8px, env(safe-area-inset-bottom));
+    max-width: calc(100vw - 16px);
+    font-size: 0.72rem;
+    padding: 4px 10px;
+  }
+}
