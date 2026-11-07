@@ -1,10 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DocumentsService, errorMessage } from './documents.service';
 import { formatSize, kindOf } from '../../shared/utils/format';
 import { DocumentView } from './document.model';
 import { SessionService } from '../../core/session/session.service';
+import { ApiStatusService } from '../../core/api-status/api-status.service';
 
 /** Message affiché après une action de l'utilisateur. */
 interface Notice {
@@ -21,6 +22,7 @@ interface Notice {
 export class Documents {
   protected readonly session = inject(SessionService);
   private readonly api = inject(DocumentsService);
+  private readonly apiStatus = inject(ApiStatusService);
 
   protected readonly archived = signal(false);
   protected readonly documents = signal<DocumentView[]>([]);
@@ -41,6 +43,15 @@ export class Documents {
 
   constructor() {
     void this.reload();
+    // L'API dormait au premier chargement : on recharge la liste dès qu'elle est réveillée.
+    let seen = 0;
+    effect(() => {
+      const n = this.apiStatus.recovered();
+      if (n > seen) {
+        seen = n;
+        untracked(() => void this.reload());
+      }
+    });
   }
 
   protected kind(d: DocumentView): string {
