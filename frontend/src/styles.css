@@ -5,26 +5,26 @@
 :root {
   color-scheme: light;
 
-  --bg: #f3f6fb;
-  --surface: #ffffff;
-  --surface-alt: #f7f9fc;
+  --bg: #dde2e8;
+  --surface: #eceff3;
+  --surface-alt: #e3e7ec;
   --text: #1e293b;
-  --muted: #64748b;
-  --border: #e3e8f0;
+  --muted: #5b6676;
+  --border: #c3cad4;
 
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
-  --primary-soft: #eaf1fe;
+  --primary-soft: #d3e0f5;
   --primary-text: #ffffff;
 
   --danger: #dc2626;
-  --danger-soft: #fdecec;
+  --danger-soft: #f1d6d6;
   --success: #15803d;
-  --success-soft: #e7f6ec;
+  --success-soft: #d4e8db;
   --info: #1e4fb8;
-  --info-soft: #eaf1fe;
+  --info-soft: #d3e0f5;
   --warning: #9a5b00;
-  --warning-soft: #fff3dc;
+  --warning-soft: #f1e3c4;
 
   --radius-sm: 6px;
   --radius: 10px;
