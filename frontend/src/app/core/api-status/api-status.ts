@@ -7,12 +7,8 @@ type State = 'checking' | 'up' | 'down';
 /** Pastille fixe en bas à droite : l'API des documents répond-elle ? (interroger l'API la réveille aussi) */
 @Component({
   selector: 'app-api-status',
-  template: `
-    <div class="api-status" [class.up]="state() === 'up'" [class.down]="state() === 'down'"
-         role="status" aria-live="polite">
-      <span class="dot" aria-hidden="true"></span>{{ label() }}
-    </div>
-  `,
+  templateUrl: './api-status.html',
+  styleUrl: './api-status.css',
 })
 export class ApiStatus implements OnDestroy {
   private readonly http = inject(HttpClient);

@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SessionService } from './session.service';
+import { SessionService } from '../../../core/session/session.service';
 
 @Component({
   selector: 'app-login',

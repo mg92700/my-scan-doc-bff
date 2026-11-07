@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { ApiStatus } from './api-status';
-import { Documents } from './documents';
-import { Login } from './login';
-import { SessionService } from './session.service';
+import { ApiStatus } from './core/api-status/api-status';
+import { Documents } from './features/documents/documents';
+import { Login } from './features/auth/login/login';
+import { SessionService } from './core/session/session.service';
 
 @Component({
   selector: 'app-root',

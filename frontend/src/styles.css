@@ -200,15 +200,3 @@ input:focus-visible {
   background: var(--info-soft);
   color: var(--info);
 }
-
-.api-status {
-  position: fixed; right: 12px; bottom: 12px; z-index: 10;
-  display: flex; align-items: center; gap: 8px;
-  padding: 6px 12px; border-radius: 999px; font-size: .8rem;
-  background: var(--surface); color: var(--muted); border: 1px solid var(--border);
-}
-.api-status .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
-.api-status.up .dot { background: #1e9e55; }
-.api-status.down .dot { background: #e0a100; animation: pulse 1.2s ease-in-out infinite; }
-@keyframes pulse { 50% { opacity: .35; } }
-@media (prefers-reduced-motion: reduce) { .api-status.down .dot { animation: none; } }

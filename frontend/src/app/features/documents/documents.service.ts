@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { DocumentView } from './models';
+import { DocumentView } from './document.model';
 
 const BASE = '/bff/documents';
 

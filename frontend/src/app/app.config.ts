@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { sessionInterceptor } from './session.interceptor';
+import { sessionInterceptor } from './core/session/session.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

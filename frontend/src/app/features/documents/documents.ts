@@ -2,9 +2,9 @@ import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DocumentsService, errorMessage } from './documents.service';
-import { formatSize, kindOf } from './format';
-import { DocumentView } from './models';
-import { SessionService } from './session.service';
+import { formatSize, kindOf } from '../../shared/utils/format';
+import { DocumentView } from './document.model';
+import { SessionService } from '../../core/session/session.service';
 
 /** Message affiché après une action de l'utilisateur. */
 interface Notice {
