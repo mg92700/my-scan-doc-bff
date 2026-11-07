@@ -16,7 +16,7 @@ COPY --from=front /front/dist/frontend/browser ./src/main/resources/static
 RUN mvn -B -q package -DskipTests
 
 # --- 3. Exécution ---
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:25-jre
 WORKDIR /app
 RUN useradd --system --uid 10001 app
 COPY --from=build /app/target/*.jar app.jar
