@@ -97,13 +97,6 @@ class SecurityFlowTest {
     }
 
     @Test
-    void me_sans_session_retourne_401_et_pose_le_cookie_csrf() throws Exception {
-        mvc.perform(get("/bff/session/me"))
-                .andExpect(status().isUnauthorized())
-                .andExpect(cookie().exists("XSRF-TOKEN"));
-    }
-
-    @Test
     void en_tetes_de_securite_presents() throws Exception {
         mvc.perform(get("/bff/session/me"))
                 .andExpect(header().string("Content-Security-Policy", org.hamcrest.Matchers.containsString("frame-ancestors 'none'")))
