@@ -18,6 +18,8 @@ RUN mvn -B -q package -DskipTests
 # --- 3. Exécution ---
 FROM eclipse-temurin:25-jre
 WORKDIR /app
+# Mise à jour des paquets système : corrige les failles apt présentes dans l'image de base (Trivy)
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 RUN useradd --system --uid 10001 app
 COPY --from=build /app/target/*.jar app.jar
 USER app
