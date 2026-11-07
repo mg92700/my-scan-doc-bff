@@ -1,0 +1,4 @@
+{
+  "/bff": { "target": "http://localhost:8081", "secure": false },
+  "/actuator": { "target": "http://localhost:8081", "secure": false }
+}

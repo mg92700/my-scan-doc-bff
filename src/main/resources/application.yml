@@ -1,0 +1,47 @@
+# Toute la configuration vient de .env (local) ou des variables d'environnement (Render).
+# Les variables d'environnement l'emportent sur .env.
+spring:
+  application:
+    name: my-scan-doc-bff
+  config:
+    import: optional:file:./.env[.properties]
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 21MB
+
+server:
+  port: ${PORT:8080}
+  # Render termine le TLS : on lit X-Forwarded-For / X-Forwarded-Proto pour l'IP réelle et le cookie Secure
+  forward-headers-strategy: native
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        http-only: true
+        secure: ${BFF_COOKIE_SECURE:true}
+        same-site: strict
+  error:
+    include-message: never
+    include-stacktrace: never
+    include-binding-errors: never
+  compression:
+    enabled: true
+
+app:
+  auth:
+    username: ${BFF_USERNAME:}
+    password-hash: ${BFF_PASSWORD_HASH:}
+  api:
+    base-url: ${API_BASE_URL:}
+    username: ${API_SERVICE_USERNAME:}
+    password: ${API_SERVICE_PASSWORD:}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never

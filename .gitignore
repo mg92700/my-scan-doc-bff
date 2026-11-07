@@ -1,0 +1,12 @@
+target/
+.env
+.idea/
+*.iml
+.vscode/
+# Front : dépendances et sorties de build
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+# Copie du front compilée par le Dockerfile
+src/main/resources/static/
+.owner-password.txt
