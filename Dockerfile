@@ -1,5 +1,5 @@
 # --- 1. Front Angular ---
-FROM node:22-alpine AS front
+FROM node:25-alpine AS front
 WORKDIR /front
 COPY frontend/package.json frontend/package-lock.json frontend/.npmrc ./
 RUN npm ci --no-audit --no-fund
