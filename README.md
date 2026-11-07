@@ -2,7 +2,7 @@
 
 Site personnel pour consulter, télécharger, archiver et supprimer ses documents scannés.
 
-- **Front** : Angular (dossier `frontend/`), servi par le back.
+- **Front** : Angular (dossier `frontend/`, voir [`frontend/README.md`](frontend/README.md)), servi par le back.
 - **Back (BFF, « back-for-front »)** : Spring Boot. Il garde la session du navigateur et relaie les appels vers [`my-scan-doc-api`](../my-scan-doc-api) avec un **compte de service**.
 
 ```
@@ -90,7 +90,7 @@ Seules ces routes existent (liste blanche) : le BFF n'est pas un proxy ouvert.
 
 ```bash
 .\mvnw.cmd verify          # back : tests + couverture JaCoCo ≥ 90 % (le build échoue en dessous)
-cd frontend && npm test    # front : 17 tests
+cd frontend && npm run test:coverage    # front : 48 tests, couverture ≥ 80 % (le build échoue en dessous)
 ```
 
 Les tests du back simulent l'API (aucune base ni Docker nécessaire).
