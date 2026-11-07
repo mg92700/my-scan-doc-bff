@@ -78,7 +78,7 @@ Toutes exigent une session ouverte, sauf les quatre premières.
 | `GET /bff/api-status` | `UP` ou `DOWN` selon que l'API répond (pastille en bas à droite du site ; interroger l'API la réveille) |
 | `GET /actuator/health` | Santé du service |
 | `POST /bff/session/logout` | Ferme la session |
-| `GET /bff/documents?archived=` | Liste les documents actifs ou archivés |
+| `GET /bff/documents?archived=&q=&offset=&limit=` | Page de documents actifs ou archivés, avec recherche par nom (voir l'API pour les limites) |
 | `POST /bff/documents` | Ajoute un fichier (multipart, champ `file`) |
 | `GET /bff/documents/{id}/download` | Télécharge |
 | `POST /bff/documents/{id}/archive` · `/unarchive` | Archive · restaure |

@@ -48,11 +48,12 @@ class DocumentsControllerTest {
 
     @Test
     void liste_relaie_le_json_et_ne_copie_pas_les_en_tetes_internes() throws Exception {
-        api.expect(requestTo("http://api/api/documents?archived=true"))
+        api.expect(requestTo("http://api/api/documents?archived=true&q=fact%20ure%26x&offset=20&limit=10"))
                 .andExpect(MockRestRequestMatchers.header(HttpHeaders.AUTHORIZATION, BEARER))
                 .andRespond(withSuccess("[{\"id\":\"1\"}]", MediaType.APPLICATION_JSON).header("X-Interne", "secret"));
 
-        mvc.perform(get("/bff/documents").param("archived", "true"))
+        mvc.perform(get("/bff/documents").param("archived", "true").param("q", "fact ure&x")
+                        .param("offset", "20").param("limit", "10"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{\"id\":\"1\"}]"))
                 .andExpect(header().doesNotExist("X-Interne"))
@@ -62,7 +63,7 @@ class DocumentsControllerTest {
 
     @Test
     void liste_par_defaut_demande_les_documents_actifs() throws Exception {
-        api.expect(requestTo("http://api/api/documents?archived=false"))
+        api.expect(requestTo("http://api/api/documents?archived=false&q=&offset=0&limit=20"))
                 .andRespond(withSuccess("[]", MediaType.APPLICATION_JSON));
 
         mvc.perform(get("/bff/documents")).andExpect(status().isOk());
@@ -147,7 +148,7 @@ class DocumentsControllerTest {
 
     @Test
     void erreur_interne_de_l_api_devient_502_generique() throws Exception {
-        api.expect(requestTo("http://api/api/documents?archived=false"))
+        api.expect(requestTo("http://api/api/documents?archived=false&q=&offset=0&limit=20"))
                 .andRespond(withServerError().body("stacktrace secrète"));
 
         mvc.perform(get("/bff/documents"))
@@ -157,7 +158,7 @@ class DocumentsControllerTest {
 
     @Test
     void api_injoignable_devient_504() throws Exception {
-        api.expect(requestTo("http://api/api/documents?archived=false"))
+        api.expect(requestTo("http://api/api/documents?archived=false&q=&offset=0&limit=20"))
                 .andRespond(request -> { throw new IOException("timeout"); });
 
         mvc.perform(get("/bff/documents")).andExpect(status().isGatewayTimeout());

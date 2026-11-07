@@ -7,3 +7,11 @@ export interface DocumentView {
   createdAt: string;
   archivedAt: string | null;
 }
+
+/** Une page de résultats renvoyée par le BFF (décalage + taille, comme dans l'API). */
+export interface DocumentPage {
+  items: DocumentView[];
+  total: number;
+  offset: number;
+  limit: number;
+}

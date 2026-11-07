@@ -38,11 +38,46 @@
       </svg>
       <input
         type="search"
+        role="combobox"
         placeholder="Rechercher par nom"
         aria-label="Rechercher"
+        aria-autocomplete="list"
+        aria-controls="suggestions"
+        autocomplete="off"
+        [attr.aria-expanded]="suggestionsOpen() && suggestions().length > 0"
+        [attr.aria-activedescendant]="activeIndex() >= 0 ? 'suggestion-' + activeIndex() : null"
         [ngModel]="query()"
-        (ngModelChange)="query.set($event)"
+        (ngModelChange)="onSearchInput($event)"
+        (keydown)="onSearchKey($event)"
+        (blur)="closeSuggestions()"
       />
+      @if (query()) {
+        <button
+          type="button"
+          class="clear"
+          aria-label="Effacer la recherche"
+          (click)="clearSearch()"
+        >
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      }
+      @if (suggestionsOpen() && suggestions().length > 0) {
+        <ul id="suggestions" class="suggestions" role="listbox">
+          @for (s of suggestions(); track s; let i = $index) {
+            <li
+              role="option"
+              [id]="'suggestion-' + i"
+              [class.active]="i === activeIndex()"
+              [attr.aria-selected]="i === activeIndex()"
+              (mousedown)="$event.preventDefault(); applySearch(s)"
+            >
+              {{ s }}
+            </li>
+          }
+        </ul>
+      }
     </div>
   </div>
 
@@ -87,9 +122,13 @@
 
   @if (loading() && documents().length === 0) {
     <p class="muted empty">Chargement…</p>
-  } @else if (visible().length === 0) {
+  } @else if (documents().length === 0) {
     <p class="muted empty">
-      {{ archived() ? 'Aucun document archivé.' : 'Aucun document.' }}
+      @if (appliedQuery()) {
+        Aucun résultat pour « {{ appliedQuery() }} ».
+      } @else {
+        {{ archived() ? 'Aucun document archivé.' : 'Aucun document.' }}
+      }
     </p>
   } @else {
     <table>
@@ -103,7 +142,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (d of visible(); track d.id) {
+        @for (d of documents(); track d.id) {
           <tr>
             <td class="name" [title]="d.name">{{ d.name }}</td>
             <td>
@@ -136,5 +175,22 @@
         }
       </tbody>
     </table>
+
+    <nav class="pager" aria-label="Pagination">
+      <span class="muted">{{ rangeFrom() }}–{{ rangeTo() }} sur {{ total() }}</span>
+      <label class="muted per-page">
+        Par page
+        <select [ngModel]="pageSize()" (ngModelChange)="changePageSize($event)">
+          @for (n of pageSizes; track n) {
+            <option [ngValue]="n">{{ n }}</option>
+          }
+        </select>
+      </label>
+      <div class="pager-buttons">
+        <button (click)="previous()" [disabled]="!hasPrevious() || loading()">Précédent</button>
+        <span class="muted">Page {{ page() }} / {{ pageCount() }}</span>
+        <button (click)="next()" [disabled]="!hasNext() || loading()">Suivant</button>
+      </div>
+    </nav>
   }
 </main>

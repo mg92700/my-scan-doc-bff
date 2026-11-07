@@ -27,8 +27,13 @@ public class DocumentsController {
     }
 
     @GetMapping
-    public ResponseEntity<byte[]> list(@RequestParam(defaultValue = "false") boolean archived) {
-        return relay(api.execute((c, t) -> c.get().uri("/api/documents?archived={a}", archived)
+    public ResponseEntity<byte[]> list(@RequestParam(defaultValue = "false") boolean archived,
+                                       @RequestParam(defaultValue = "") String q,
+                                       @RequestParam(defaultValue = "0") int offset,
+                                       @RequestParam(defaultValue = "20") int limit) {
+        // Les valeurs sont encodées par le gabarit d'URI ; l'API valide les bornes (offset, limit, taille de q)
+        return relay(api.execute((c, t) -> c.get()
+                .uri("/api/documents?archived={a}&q={q}&offset={o}&limit={l}", archived, q, offset, limit)
                 .headers(h -> h.setBearerAuth(t)).retrieve().toEntity(byte[].class)));
     }
 

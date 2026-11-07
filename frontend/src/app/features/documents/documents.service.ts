@@ -1,16 +1,44 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
-import { DocumentView } from './document.model';
+import { Observable, catchError, firstValueFrom, map, of } from 'rxjs';
+import { DocumentPage, DocumentView } from './document.model';
 
 const BASE = '/bff/documents';
+
+/** Tailles de page proposées (l'API accepte jusqu'à 100). */
+export const PAGE_SIZES = [10, 20, 50] as const;
+/** Nombre de suggestions affichées pendant la frappe. */
+export const SUGGESTION_COUNT = 6;
 
 @Injectable({ providedIn: 'root' })
 export class DocumentsService {
   private readonly http = inject(HttpClient);
 
-  list(archived: boolean): Promise<DocumentView[]> {
-    return firstValueFrom(this.http.get<DocumentView[]>(BASE, { params: { archived } }));
+  /** Une page de documents ; la recherche et le découpage en pages sont faits par le serveur. */
+  list(
+    archived: boolean,
+    query = '',
+    offset = 0,
+    limit: number = PAGE_SIZES[0],
+  ): Promise<DocumentPage> {
+    return firstValueFrom(
+      this.http.get<DocumentPage>(BASE, { params: { archived, q: query, offset, limit } }),
+    );
+  }
+
+  /**
+   * Noms proposés pendant la frappe. Renvoie un Observable pour que la requête précédente soit annulée
+   * (switchMap) quand l'utilisateur continue de taper ; une erreur donne simplement « aucune suggestion ».
+   */
+  suggestions(query: string, archived: boolean): Observable<string[]> {
+    return this.http
+      .get<DocumentPage>(BASE, {
+        params: { archived, q: query, offset: 0, limit: SUGGESTION_COUNT },
+      })
+      .pipe(
+        map((page) => [...new Set(page.items.map((d) => d.name))]),
+        catchError(() => of<string[]>([])),
+      );
   }
 
   archive(id: string): Promise<DocumentView> {

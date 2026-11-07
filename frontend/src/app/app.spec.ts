@@ -27,16 +27,21 @@ describe('App', () => {
     await fixture.whenStable();
     http
       .expectOne((r) => r.url === '/bff/documents')
-      .flush([
-        {
-          id: '1',
-          name: 'facture.pdf',
-          size: 2048,
-          contentType: 'application/pdf',
-          createdAt: '2026-01-01T10:00:00Z',
-          archivedAt: null,
-        },
-      ]);
+      .flush({
+        items: [
+          {
+            id: '1',
+            name: 'facture.pdf',
+            size: 2048,
+            contentType: 'application/pdf',
+            createdAt: '2026-01-01T10:00:00Z',
+            archivedAt: null,
+          },
+        ],
+        total: 1,
+        offset: 0,
+        limit: 10,
+      });
     await new Promise((r) => setTimeout(r)); // laisse la promesse de liste se résoudre
     await fixture.whenStable();
     const el = fixture.nativeElement as HTMLElement;

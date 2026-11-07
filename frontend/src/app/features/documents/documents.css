@@ -94,6 +94,83 @@
 
 .search input {
   padding-left: 36px;
+  padding-right: 34px;
+}
+
+.search .clear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+}
+
+.search .clear .icon {
+  position: static;
+  transform: none;
+  pointer-events: none;
+}
+
+/* --- Suggestions de la recherche -------------------------------------------- */
+.suggestions {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.suggestions li {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suggestions li:hover,
+.suggestions li.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+/* --- Pagination ----------------------------------------------------------- */
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pager-buttons,
+.per-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.per-page select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
 }
 
 /* --- Zone de dépôt --------------------------------------------------------- */

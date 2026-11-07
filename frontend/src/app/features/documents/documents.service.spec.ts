@@ -27,13 +27,55 @@ describe('DocumentsService', () => {
 
   afterEach(() => http.verify());
 
-  it('liste les documents actifs ou archivés', async () => {
-    const pending = service.list(true);
+  it('liste une page avec recherche, décalage et taille', async () => {
+    const pending = service.list(true, 'fact', 20, 10);
     const req = http.expectOne((r) => r.url === '/bff/documents');
     expect(req.request.method).toBe('GET');
     expect(req.request.params.get('archived')).toBe('true');
-    req.flush([doc]);
-    expect(await pending).toEqual([doc]);
+    expect(req.request.params.get('q')).toBe('fact');
+    expect(req.request.params.get('offset')).toBe('20');
+    expect(req.request.params.get('limit')).toBe('10');
+    const page = { items: [doc], total: 21, offset: 20, limit: 10 };
+    req.flush(page);
+    expect(await pending).toEqual(page);
+  });
+
+  it('liste par défaut : sans recherche, première page de 10', async () => {
+    const pending = service.list(false);
+    const req = http.expectOne((r) => r.url === '/bff/documents');
+    expect(req.request.params.get('q')).toBe('');
+    expect(req.request.params.get('offset')).toBe('0');
+    expect(req.request.params.get('limit')).toBe('10');
+    req.flush({ items: [], total: 0, offset: 0, limit: 10 });
+    await pending;
+  });
+
+  it('suggestions : noms distincts, limités à 6', async () => {
+    let names: string[] = [];
+    service.suggestions('fa', false).subscribe((n) => (names = n));
+    const req = http.expectOne((r) => r.url === '/bff/documents');
+    expect(req.request.params.get('q')).toBe('fa');
+    expect(req.request.params.get('limit')).toBe('6');
+    req.flush({
+      items: [
+        { ...doc, name: 'facture.pdf' },
+        { ...doc, id: '2', name: 'facture.pdf' },
+        { ...doc, id: '3', name: 'fax.pdf' },
+      ],
+      total: 3,
+      offset: 0,
+      limit: 6,
+    });
+    expect(names).toEqual(['facture.pdf', 'fax.pdf']);
+  });
+
+  it('suggestions : une erreur donne une liste vide', () => {
+    let names: string[] | undefined;
+    service.suggestions('fa', false).subscribe((n) => (names = n));
+    http
+      .expectOne((r) => r.url === '/bff/documents')
+      .flush(null, { status: 502, statusText: 'Bad Gateway' });
+    expect(names).toEqual([]);
   });
 
   it('archive et restaure', async () => {
